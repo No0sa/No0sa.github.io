@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nosyba Mudathir — Flutter Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0d0d0d;
+    --surface: #141414;
+    --border:  #242424;
+    --text:    #e8e4de;
+    --muted:   #7a7570;
+    --accent:  #c9a96e;
+    --accent2: #8fb8a8;
+    --white:   #f5f2ee;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem; color: var(--accent);
+    letter-spacing: 0.02em; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 300;
+    letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 120px 48px 80px; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(201,169,110,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(143,184,168,0.05) 0%, transparent 60%);
+  }
+  .hero-content { position: relative; max-width: 720px; }
+  .hero-tag {
+    display: inline-block; font-size: 0.78rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); font-weight: 400;
+    margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards;
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05;
+    color: var(--white); margin-bottom: 12px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--accent); }
+  .hero-role {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--muted);
+    font-weight: 300; margin-bottom: 32px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .hero-desc {
+    font-size: 1.05rem; color: var(--text); font-weight: 300;
+    max-width: 520px; line-height: 1.8; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 4px; font-size: 0.88rem;
+    font-weight: 400; letter-spacing: 0.04em; text-decoration: none;
+    transition: all 0.25s; cursor: pointer; border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary { background: var(--accent); color: #0d0d0d; }
+  .btn-primary:hover { background: #d4b47e; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  .hero-stats {
+    position: absolute; right: 48px; bottom: 80px;
+    display: flex; flex-direction: column; gap: 32px;
+    opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+  .stat { text-align: right; }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem; color: var(--white); line-height: 1;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.75rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-top: 4px;
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); color: var(--white);
+    margin-bottom: 56px; line-height: 1.15;
+  }
+  .divider { width: 100%; height: 1px; background: var(--border); margin: 0 auto; }
+
+  /* PROJECTS */
+  .project-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 32px 36px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 24px; align-items: start;
+    transition: border-color 0.3s, transform 0.3s;
+    margin-bottom: 10px;
+  }
+  .project-card:hover { border-color: var(--accent); transform: translateX(4px); }
+  .project-card.featured {
+    border-color: rgba(201,169,110,0.3);
+    background: linear-gradient(135deg, rgba(201,169,110,0.04) 0%, var(--surface) 60%);
+  }
+  .project-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); background: rgba(201,169,110,0.1);
+    padding: 4px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .project-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .project-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem; color: var(--white);
+    margin-bottom: 8px; line-height: 1.2;
+  }
+  .project-desc {
+    font-size: 0.92rem; color: var(--muted); font-weight: 300;
+    line-height: 1.7; margin-bottom: 14px; max-width: 580px;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    font-size: 0.75rem; color: var(--accent2);
+    background: rgba(143,184,168,0.08);
+    padding: 3px 10px; border-radius: 3px;
+    letter-spacing: 0.04em; font-weight: 400;
+  }
+  .project-link {
+    color: var(--muted); text-decoration: none; font-size: 0.82rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s; white-space: nowrap; margin-top: 4px;
+  }
+  .project-link:hover { color: var(--accent); }
+  .arrow { transition: transform 0.2s; display: inline-block; }
+  .project-link:hover .arrow { transform: translate(3px,-3px); }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .skill-group {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 28px 32px; transition: border-color 0.3s;
+  }
+  .skill-group:hover { border-color: var(--accent); }
+  .skill-group-title {
+    font-size: 0.75rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .skill-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-list li { font-size: 0.88rem; color: var(--text); font-weight: 300; }
+  .skill-list li::after { content: ' ·'; color: var(--border); }
+  .skill-list li:last-child::after { content: ''; }
+
+  /* EXPERIENCE */
+  .experience-list { display: flex; flex-direction: column; }
+  .exp-item {
+    display: grid; grid-template-columns: 180px 1fr;
+    gap: 40px; padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+  .exp-period { font-size: 0.82rem; color: var(--muted); font-weight: 300; padding-top: 4px; }
+  .exp-company { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-top: 6px; }
+  .exp-role { font-family: 'DM Serif Display', serif; font-size: 1.25rem; color: var(--white); margin-bottom: 10px; }
+  .exp-desc { font-size: 0.9rem; color: var(--muted); font-weight: 300; line-height: 1.75; }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 100px 48px; text-align: center;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-section .section-label { text-align: center; }
+  .contact-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    color: var(--white); margin-bottom: 16px; line-height: 1.1;
+  }
+  .contact-title em { color: var(--accent); font-style: italic; }
+  .contact-sub { font-size: 1rem; color: var(--muted); font-weight: 300; margin-bottom: 48px; }
+  .contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 48px; display: flex;
+    justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: var(--muted); font-weight: 300;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 80px; }
+    .hero-stats { display: none; }
+    section { padding: 72px 24px; }
+    .contact-section { padding: 72px 24px; }
+    footer { padding: 24px; flex-direction: column; gap: 8px; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .project-card { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">NM</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Flutter Developer &nbsp;·&nbsp; Mobile Apps</span>
+    <h1 class="hero-name">Nosyba<br><em>Mudathir</em></h1>
+    <p class="hero-role">Building beautiful cross-platform experiences</p>
+    <p class="hero-desc">
+      Flutter developer with 2+ years of experience shipping mobile applications
+      across healthcare, Islamic utilities, e-commerce, and enterprise. Based in Egypt,
+      available for freelance and full-time opportunities.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      <a href="Nosyba_Mudathir_CV.pdf" class="btn btn-outline" download>Download CV</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">18<span>+</span></div>
+      <div class="stat-label">Apps Shipped</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<span>+</span></div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Live on Play Store</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label reveal">Selected Work</p>
+  <h2 class="section-title reveal">All Projects</h2>
+
+  <!-- FEATURED -->
+  <div class="project-card featured reveal">
+    <div>
+      <div class="project-badge">Live on Google Play Store</div>
+      <h3 class="project-name">Raheel</h3>
+      <p class="project-desc">A full-featured cemetery management and Islamic multimedia application. Built and published independently — from architecture to Play Store deployment. iOS release currently in progress.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Push Notifications</span><span class="tag">Multimedia</span><span class="tag">Arabic/English</span>
+      </div>
+    </div>
+    <a href="https://play.google.com/store" target="_blank" class="project-link">Play Store <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Raheel — Admin Dashboard</h3>
+      <p class="project-desc">Administrative web dashboard and REST API backend powering the Raheel mobile app. Handles cemetery orders, multimedia content management, and reporting.</p>
+      <div class="project-tags">
+        <span class="tag">Laravel</span><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">REST API</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Doctor of the Future</h3>
+      <p class="project-desc">Telemedicine application for booking remote medical consultations. Features live video calling, real-time chat, appointment scheduling, and integrated payment processing.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Video Calling</span><span class="tag">Payments</span><span class="tag">Real-time Chat</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Al Kawthar</h3>
+      <p class="project-desc">Comprehensive Islamic utility app featuring Quran, Athkar, and daily reminders. Full Arabic/English localization, background services, and push notifications.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">BLoC</span><span class="tag">REST API</span><span class="tag">Localization</span><span class="tag">Background Services</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Rayo — Car Marketplace</h3>
+      <p class="project-desc">Browse, buy, and sell vehicles with advanced search & filtering, seller profiles, ad creation, and a favorites system.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">BLoC</span><span class="tag">REST API</span><span class="tag">Advanced Search</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">DalFood Inventory System</h3>
+      <p class="project-desc">Inventory and supplier management system with real-time stock alerting, automated SMS scheduling, purchase orders, and PDF export functionality.</p>
+      <div class="project-tags">
+        <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">SMS API</span><span class="tag">PDF Export</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">BAPS Team</h3>
+      <p class="project-desc">Employee management application for tracking professional skills and department activity, with profile management and skill logging.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">REST API</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">DIMC</h3>
+      <p class="project-desc">Racing club application for event scheduling and membership management, with an event calendar, multimedia gallery, and event registration.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Event Calendar</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Miracle Doctor</h3>
+      <p class="project-desc">Medical booking app covering pharmacy, lab services, and doctor consultations with authentication, payments, real-time chat, and localization.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Payments</span><span class="tag">Chat</span><span class="tag">Localization</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Sand Project</h3>
+      <p class="project-desc">Government services application enabling citizens to submit service requests with localization, accessibility compliance, and form validation.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Localization</span><span class="tag">Accessibility</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Hope</h3>
+      <p class="project-desc">E-learning application for browsing and booking educational courses, with in-app chat, payment processing, and push notifications.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Payments</span><span class="tag">Chat</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Dubai</h3>
+      <p class="project-desc">Cemetery mapping and donation management application with voice search, interactive map, and donation payment processing.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Voice Search</span><span class="tag">Maps</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Track My Work</h3>
+      <p class="project-desc">Employee productivity application for tracking daily work programs and submitting feedback, with route management and dynamic work listing.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Form Validation</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Protofolio</h3>
+      <p class="project-desc">AI-powered application that analyzes local codebases and generates portfolio summaries using Gemini AI, with dynamic UI rendering and state management.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Gemini API</span><span class="tag">AI Integration</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Fitness Tracker</h3>
+      <p class="project-desc">Daily physical activity tracking app with animated progress charts, local database management, and activity validation.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">SQLite</span><span class="tag">REST API</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Flashcard Quiz</h3>
+      <p class="project-desc">Interactive quiz application using flashcards for studying, with animated UI, deck management, and state management.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Animations</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Random Quote Generator</h3>
+      <p class="project-desc">Daily curated quotes app for motivation with favorites tracking, UI animations, and sharing functionality.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">State Management</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+  <div class="project-card reveal">
+    <div>
+      <h3 class="project-name">Namer App</h3>
+      <p class="project-desc">Utility application that generates random English words and allows users to save their favorites using Provider state management.</p>
+      <div class="project-tags">
+        <span class="tag">Flutter</span><span class="tag">Provider</span>
+      </div>
+    </div>
+    <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label reveal">Capabilities</p>
+  <h2 class="section-title reveal">Technical Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Languages</div>
+      <ul class="skill-list"><li>Dart</li><li>Java</li><li>PHP</li></ul>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Frameworks & Tools</div>
+      <ul class="skill-list"><li>Flutter</li><li>Firebase</li><li>Laravel</li><li>RESTful APIs</li><li>GraphQL</li></ul>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">State Management</div>
+      <ul class="skill-list"><li>BLoC</li><li>Provider</li><li>Riverpod</li><li>GetX</li></ul>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Databases</div>
+      <ul class="skill-list"><li>Firebase Firestore</li><li>SQLite</li><li>Hive</li><li>MySQL</li></ul>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Dev & Deployment</div>
+      <ul class="skill-list"><li>Git</li><li>GitHub</li><li>GitLab</li><li>Play Store</li><li>App Store</li></ul>
+    </div>
+    <div class="skill-group reveal">
+      <div class="skill-group-title">Languages Spoken</div>
+      <ul class="skill-list"><li>Arabic (Native)</li><li>English (Very Good)</li></ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label reveal">Career</p>
+  <h2 class="section-title reveal">Experience</h2>
+  <div class="experience-list">
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-period">Feb 2025 — Present</div>
+        <div class="exp-company">Self-Employed</div>
+      </div>
+      <div>
+        <div class="exp-role">Freelance Flutter Developer</div>
+        <div class="exp-desc">Independently designed, built, and published the Raheel app on Google Play Store. Delivered 10+ client projects across healthcare, Islamic utilities, car marketplace, and inventory systems — all on time and within scope. Implemented complex features including video calling, real-time chat, payment gateways, and multilingual localization.</div>
+        <div class="exp-tags">
+          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Laravel</span><span class="tag">Play Store</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-period">Jan 2023 — Feb 2025</div>
+        <div class="exp-company">etoo technology</div>
+      </div>
+      <div>
+        <div class="exp-role">Flutter Developer</div>
+        <div class="exp-desc">Built and maintained 10+ cross-platform Android and iOS applications. Reduced development time by ~30% through reusable widget libraries. Reduced crash rates by 40% and maintained 4.5+ Play Store rating. Worked in Agile/Scrum team and mentored junior developers.</div>
+        <div class="exp-tags">
+          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Firebase</span><span class="tag">RESTful APIs</span><span class="tag">Agile</span>
+        </div>
+      </div>
+    </div>
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-period">Aug 2021</div>
+        <div class="exp-company">TPRA</div>
+      </div>
+      <div>
+        <div class="exp-role">Technical Support Specialist (Training)</div>
+        <div class="exp-desc">Configured network systems, resolved 15+ daily support tickets, and maintained 99%+ server uptime during the training period.</div>
+        <div class="exp-tags">
+          <span class="tag">Networking</span><span class="tag">C++</span><span class="tag">Java</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <p class="section-label">Let's Connect</p>
+  <h2 class="contact-title">Open to new<br><em>opportunities</em></h2>
+  <p class="contact-sub">Available for freelance projects and full-time roles.</p>
+  <div class="contact-links">
+    <a href="mailto:nosybamudathir@gmail.com" class="btn btn-primary">nosybamudathir@gmail.com</a>
+    <a href="https://github.com/No0sa" target="_blank" class="btn btn-outline">GitHub ↗</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Nosyba Mudathir</span>
+  <span>Flutter Developer · Egypt</span>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+    });
+  });
+</script>
+</body>
+</html>
