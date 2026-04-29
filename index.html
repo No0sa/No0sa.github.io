@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -305,39 +304,6 @@ nav.scrolled { height: 60px; }
 
 .divider { width: 100%; height: 1px; background: var(--border); }
 
-/* PROJECT FILTERS */
-.project-filters {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
-}
-.filter-btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); background: var(--surface);
-  border: 1px solid var(--border); border-radius: 3px;
-  padding: 7px 16px; cursor: none; transition: all 0.2s ease;
-}
-.filter-btn:hover { color: var(--text); border-color: var(--border2); }
-.filter-btn.active {
-  color: var(--bg); background: var(--accent);
-  border-color: var(--accent);
-}
-.no-results {
-  display: none; grid-column: 1/-1;
-  padding: 48px; text-align: center;
-  color: var(--muted); font-size: 0.9rem; font-weight: 300;
-  border: 1px dashed var(--border); border-radius: 6px;
-}
-.no-results.visible { display: block; }
-.project-card.hidden { display: none; }
-
-.filter-btn .filter-count {
-  opacity: 0.45; font-size: 0.65rem;
-}
-.filter-btn.active .filter-count { opacity: 0.7; }
-.project-card.hidden {
-  display: none;
-}
-
 /* PROJECTS */
 .projects-featured { margin-bottom: 16px; }
 
@@ -570,6 +536,7 @@ footer span:last-child { opacity: 0.6; }
   .exp-item { grid-template-columns: 1fr; gap: 10px; }
   .experience-list { padding-left: 0; }
   .experience-list::before, .exp-item::before { display: none; }
+  .cert-item { grid-template-columns: 1fr; gap: 8px; }
 }
 
 @media (max-width: 768px) {
@@ -603,6 +570,7 @@ footer span:last-child { opacity: 0.6; }
   <a href="#projects" onclick="closeMobile()">Projects</a>
   <a href="#skills" onclick="closeMobile()">Skills</a>
   <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#education" onclick="closeMobile()">Education</a>
   <a href="#contact" onclick="closeMobile()">Contact</a>
 </div>
 
@@ -613,6 +581,7 @@ footer span:last-child { opacity: 0.6; }
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
@@ -635,9 +604,7 @@ footer span:last-child { opacity: 0.6; }
     <h1 class="hero-name">Nosyba<br><em>Mudathir</em></h1>
     <p class="hero-role">Building beautiful cross-platform experiences</p>
     <p class="hero-desc">
-      Flutter developer with 2+ years shipping mobile applications across
-      healthcare, Islamic utilities, e-commerce, and enterprise.
-      Based in Egypt — available for freelance and full-time.
+      Self-driven Flutter developer with 4+ years of experience, including self-taught foundations since 2022 and 3+ years of professional freelance delivery. Shipped 18+ production apps across healthcare, Islamic utilities, car marketplace, and enterprise — with a 0% revision-request rate on solo deployments. Based in Egypt — available for freelance and full-time.
     </p>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -652,7 +619,7 @@ footer span:last-child { opacity: 0.6; }
       <div class="stat-label">Apps Shipped</div>
     </div>
     <div class="stat">
-      <div class="stat-num">2<span>+</span></div>
+      <div class="stat-num">4<span>+</span></div>
       <div class="stat-label">Years Experience</div>
     </div>
     <div class="stat">
@@ -675,24 +642,17 @@ footer span:last-child { opacity: 0.6; }
   <div class="section-header">
     <p class="section-label reveal">Selected Work</p>
     <h2 class="section-title reveal">All Projects</h2>
-    <div class="project-filters reveal" style="margin-top:28px;">
-      <button class="filter-btn active" data-filter="all">All <span class="filter-count">(18)</span></button>
-      <button class="filter-btn" data-filter="flutter">Flutter <span class="filter-count">(17)</span></button>
-      <button class="filter-btn" data-filter="backend">Backend <span class="filter-count">(2)</span></button>
-      <button class="filter-btn" data-filter="health">Healthcare <span class="filter-count">(2)</span></button>
-      <button class="filter-btn" data-filter="ai">AI <span class="filter-count">(1)</span></button>
-    </div>
   </div>
 
   <!-- FEATURED -->
   <div class="projects-featured reveal">
-    <div class="project-card featured" data-category="flutter">
+    <div class="project-card featured">
       <div>
         <div class="project-badge">Coming Soon — Android &amp; iOS</div>
         <h3 class="project-name">Raheel</h3>
-        <p class="project-desc">A full-featured cemetery management and Islamic multimedia application. Built independently from architecture to deployment-ready release — launching soon on both Google Play and the App Store.</p>
+        <p class="project-desc">Official cemetery management app developed for the Fujairah Government, UAE. Built independently from architecture to deployment-ready release — launching soon on both Google Play and the App Store.</p>
         <div class="project-tags">
-          <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Push Notifications</span><span class="tag">Multimedia</span><span class="tag">Arabic/English</span>
+          <span class="tag">Flutter</span><span class="tag">REST API</span><span class="tag">Push Notifications</span><span class="tag">Multimedia</span><span class="tag">Arabic/English</span><span class="tag">UAE Government</span>
         </div>
       </div>
       <a href="https://github.com/No0sa" target="_blank" class="project-link">GitHub <span class="arrow">↗</span></a>
@@ -701,9 +661,7 @@ footer span:last-child { opacity: 0.6; }
 
   <!-- PROJECT GRID -->
   <div class="projects-grid" id="projectsGrid" style="margin-top:12px;">
-    <div class="no-results" id="noResults">No projects in this category yet.</div>
-
-    <div class="project-card reveal" data-category="backend" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">01</div>
       <h3 class="project-name">Raheel — Admin Dashboard</h3>
       <p class="project-desc">Administrative web dashboard and REST API backend powering the Raheel mobile app. Handles cemetery orders, multimedia content management, and reporting.</p>
@@ -715,7 +673,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter health" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">02</div>
       <h3 class="project-name">Doctor of the Future</h3>
       <p class="project-desc">Telemedicine application for booking remote medical consultations. Features live video calling, real-time chat, appointment scheduling, and integrated payment processing.</p>
@@ -727,19 +685,19 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">03</div>
       <h3 class="project-name">Al Kawthar</h3>
-      <p class="project-desc">Comprehensive Islamic utility app featuring Quran, Athkar, and daily reminders. Full Arabic/English localization, background services, and push notifications.</p>
+      <p class="project-desc">Comprehensive Islamic companion app with 20+ features including: Quran with full tashkeel (القرآن بالتشكيل), Quran Khatma tracker, Azkar &amp; Adhkar, Hisn Muslim, Daily Duas, Prayer times &amp; Azan notifications, Qibla compass, Tasbih counter, Zakat calculator, Hajj guide, 99 Names of Allah, Islamic quiz, Mosque finder, Hijri &amp; Islamic calendar, Daily worship reminders, Traveler guide. Full Arabic/English localisation with offline mode and push notifications.</p>
       <div class="project-footer">
         <div class="project-tags">
-          <span class="tag">Flutter</span><span class="tag">BLoC</span><span class="tag">Localization</span>
+          <span class="tag">Flutter</span><span class="tag">BLoC</span><span class="tag">Offline</span><span class="tag">Arabic/English</span>
         </div>
         <a href="https://github.com/No0sa" target="_blank" class="project-link" style="margin-left:12px;">GitHub <span class="arrow">↗</span></a>
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">04</div>
       <h3 class="project-name">Rayo — Car Marketplace</h3>
       <p class="project-desc">Browse, buy, and sell vehicles with advanced search &amp; filtering, seller profiles, ad creation, and a favorites system.</p>
@@ -751,7 +709,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="backend" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">05</div>
       <h3 class="project-name">DalFood Inventory System</h3>
       <p class="project-desc">Inventory and supplier management system with real-time stock alerting, automated SMS scheduling, purchase orders, and PDF export functionality.</p>
@@ -763,7 +721,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">06</div>
       <h3 class="project-name">BAPS Team</h3>
       <p class="project-desc">Employee management application for tracking professional skills and department activity, with profile management and skill logging.</p>
@@ -775,7 +733,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">07</div>
       <h3 class="project-name">DIMC</h3>
       <p class="project-desc">Racing club application for event scheduling and membership management, with an event calendar, multimedia gallery, and event registration.</p>
@@ -787,7 +745,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter health" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">08</div>
       <h3 class="project-name">Miracle Doctor</h3>
       <p class="project-desc">Medical booking app covering pharmacy, lab services, and doctor consultations with authentication, payments, real-time chat, and localization.</p>
@@ -799,7 +757,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">09</div>
       <h3 class="project-name">Sand Project</h3>
       <p class="project-desc">Government services application enabling citizens to submit service requests with localization, accessibility compliance, and form validation.</p>
@@ -811,7 +769,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">10</div>
       <h3 class="project-name">Hope</h3>
       <p class="project-desc">E-learning application for browsing and booking educational courses, with in-app chat, payment processing, and push notifications.</p>
@@ -823,7 +781,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">11</div>
       <h3 class="project-name">Dubai</h3>
       <p class="project-desc">Cemetery mapping and donation management application with voice search, interactive map, and donation payment processing.</p>
@@ -835,7 +793,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">12</div>
       <h3 class="project-name">Track My Work</h3>
       <p class="project-desc">Employee productivity application for tracking daily work programs and submitting feedback, with route management and dynamic work listing.</p>
@@ -847,7 +805,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter ai" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">13</div>
       <h3 class="project-name">Protofolio</h3>
       <p class="project-desc">AI-powered application that analyzes local codebases and generates portfolio summaries using Gemini AI, with dynamic UI rendering and state management.</p>
@@ -859,7 +817,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">14</div>
       <h3 class="project-name">Fitness Tracker</h3>
       <p class="project-desc">Daily physical activity tracking app with animated progress charts, local database management, and activity validation.</p>
@@ -871,7 +829,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">15</div>
       <h3 class="project-name">Flashcard Quiz</h3>
       <p class="project-desc">Interactive quiz application using flashcards for studying, with animated UI, deck management, and state management.</p>
@@ -883,7 +841,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">16</div>
       <h3 class="project-name">Random Quote Generator</h3>
       <p class="project-desc">Daily curated quotes app for motivation with favorites tracking, UI animations, and sharing functionality.</p>
@@ -895,7 +853,7 @@ footer span:last-child { opacity: 0.6; }
       </div>
     </div>
 
-    <div class="project-card reveal" data-category="flutter" style="position:relative;">
+    <div class="project-card reveal" style="position:relative;">
       <div class="project-index">17</div>
       <h3 class="project-name">Namer App</h3>
       <p class="project-desc">Utility application that generates random English words and allows users to save their favorites using Provider state management.</p>
@@ -926,7 +884,7 @@ footer span:last-child { opacity: 0.6; }
       <ul class="skill-list"><li>Dart</li><li>Java</li><li>PHP</li></ul>
     </div>
     <div class="skill-group reveal">
-      <div class="skill-group-title">Frameworks & Tools</div>
+      <div class="skill-group-title">Frameworks &amp; Tools</div>
       <ul class="skill-list"><li>Flutter</li><li>Firebase</li><li>Laravel</li><li>RESTful APIs</li><li>GraphQL</li></ul>
     </div>
     <div class="skill-group reveal">
@@ -938,8 +896,8 @@ footer span:last-child { opacity: 0.6; }
       <ul class="skill-list"><li>Firebase Firestore</li><li>SQLite</li><li>Hive</li><li>MySQL</li></ul>
     </div>
     <div class="skill-group reveal">
-      <div class="skill-group-title">Dev & Deployment</div>
-      <ul class="skill-list"><li>Git</li><li>GitHub</li><li>GitLab</li><li>Play Store</li><li>App Store</li></ul>
+      <div class="skill-group-title">Dev &amp; Deployment</div>
+      <ul class="skill-list"><li>Git</li><li>GitHub</li><li>GitLab</li><li>Play Store</li><li>App Store</li><li>Postman</li></ul>
     </div>
     <div class="skill-group reveal">
       <div class="skill-group-title">Languages Spoken</div>
@@ -962,12 +920,19 @@ footer span:last-child { opacity: 0.6; }
 
     <div class="exp-item reveal">
       <div>
-        <div class="exp-period">Feb 2025 — Present</div>
+        <div class="exp-period">2023 — Present</div>
         <div class="exp-company">Self-Employed</div>
       </div>
       <div>
         <div class="exp-role">Freelance Flutter Developer</div>
-        <div class="exp-desc">Independently designed and built the Raheel app, currently pending release on both Google Play and the App Store. Delivered 10+ client projects across healthcare, Islamic utilities, car marketplace, and inventory systems — all on time and within scope. Implemented complex features including video calling, real-time chat, payment gateways, and multilingual localization.</div>
+        <div class="exp-desc">
+          Independently built Raheel — a full-featured cemetery management and Islamic multimedia app — achieving 0 revision requests from the client. Pending final submission to Google Play Store and App Store.<br><br>
+          Delivered 10+ client projects across healthcare, Islamic utilities, car marketplace, and inventory systems — 100% on-time delivery across all engagements.<br><br>
+          Implemented advanced mobile SDK features: video calling, real-time chat, payment gateways, push notifications, PDF exports, SMS scheduling, and Arabic/English localisation — handling 6+ SDK categories per project on average.<br><br>
+          Applied CI/CD pipelines and unit testing to maintain code quality; reduced post-release bug reports across all projects.<br><br>
+          Built Sanad app for Etoo Play Information Technology — full-cycle Flutter delivery from requirements to deployment.<br><br>
+          Completed 10+ certifications (SATR, Packt, IBM, SkillUp) while maintaining active project delivery — averaging 2+ certifications per month in 2025.
+        </div>
         <div class="exp-tags">
           <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Laravel</span><span class="tag">Play Store</span>
         </div>
@@ -977,13 +942,20 @@ footer span:last-child { opacity: 0.6; }
     <div class="exp-item reveal">
       <div>
         <div class="exp-period">Jan 2023 — Feb 2025</div>
-        <div class="exp-company">etoo technology</div>
+        <div class="exp-company">Etoo Play Information Technology</div>
       </div>
       <div>
         <div class="exp-role">Flutter Developer</div>
-        <div class="exp-desc">Built and maintained 10+ cross-platform Android and iOS applications. Reduced development time by ~30% through reusable widget libraries. Reduced crash rates by 40% and maintained 4.5+ Play Store rating. Worked in Agile/Scrum team and mentored junior developers.</div>
+        <div class="exp-desc">
+          Led the development and deployment of high-performance mobile applications using Flutter and Dart, ensuring 99.9% crash-free sessions.<br><br>
+          Engineered a custom library of reusable UI widgets, optimizing development speed by 30% and ensuring UI/UX consistency.<br><br>
+          Architected robust integrations with RESTful APIs and backend services, improving data synchronization and responsiveness.<br><br>
+          Optimized application performance through advanced debugging, significantly reducing load times on Android devices.<br><br>
+          Implemented scalable state management solutions (BLoC, Riverpod, and GetX) to maintain a highly modular and testable codebase.<br><br>
+          Authored comprehensive technical documentation, facilitating seamless team collaboration and cross-functional onboarding.
+        </div>
         <div class="exp-tags">
-          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Firebase</span><span class="tag">RESTful APIs</span><span class="tag">Agile</span>
+          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">BLoC</span><span class="tag">Riverpod</span><span class="tag">GetX</span><span class="tag">RESTful APIs</span><span class="tag">Firebase</span>
         </div>
       </div>
     </div>
@@ -1006,6 +978,35 @@ footer span:last-child { opacity: 0.6; }
 </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+<div class="section-wrap">
+  <div class="section-header">
+    <p class="section-label reveal">Academic</p>
+    <h2 class="section-title reveal">Education</h2>
+  </div>
+  <div class="experience-list">
+    <div class="exp-item reveal">
+      <div>
+        <div class="exp-period">Graduated 2022</div>
+        <div class="exp-company">University of Science &amp; Technology</div>
+      </div>
+      <div>
+        <div class="exp-role">BA (Hons) in Computer Science</div>
+        <div class="exp-desc">Coursework: Data Structures &amp; Algorithms, OOP, Database Systems, Computer Networks, Software Engineering, Mobile Development, OS, Artificial Intelligence.<br><br>Self-taught Flutter during final year; applied it independently to build graduation project.</div>
+        <div class="exp-tags">
+          <span class="tag">Computer Science</span><span class="tag">Mobile Development</span><span class="tag">AI</span><span class="tag">Software Engineering</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+
 <!-- CONTACT -->
 <div class="contact-section" id="contact">
   <div class="contact-bg-text">Available</div>
@@ -1016,6 +1017,7 @@ footer span:last-child { opacity: 0.6; }
     <div class="contact-links reveal">
       <a href="mailto:nosybamudathir@gmail.com" class="btn btn-primary">nosybamudathir@gmail.com</a>
       <a href="https://github.com/No0sa" target="_blank" class="btn btn-outline">GitHub ↗</a>
+      <a href="https://linkedin.com/in/nosyba-mudathir" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
     </div>
   </div>
 </div>
@@ -1089,40 +1091,6 @@ footer span:last-child { opacity: 0.6; }
       a.classList.toggle('active', a.getAttribute('href') === '#' + current);
     });
   });
-
-  // PROJECT FILTER
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const allCards = document.querySelectorAll('.project-card[data-category]');
-  const featuredWrap = document.querySelector('.projects-featured');
-  const noResults = document.getElementById('noResults');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const f = btn.dataset.filter;
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      // Featured card visibility
-      if (featuredWrap) {
-        const featCat = (featuredWrap.querySelector('.project-card').dataset.category || '').split(' ');
-        featuredWrap.style.display = (f === 'all' || featCat.includes(f)) ? '' : 'none';
-      }
-
-      // Grid cards
-      let visible = 0;
-      allCards.forEach(card => {
-        if (card.closest('.projects-featured')) return;
-        const cats = (card.dataset.category || '').split(' ');
-        const show = f === 'all' || cats.includes(f);
-        card.classList.toggle('hidden', !show);
-        if (show) visible++;
-      });
-
-      // No-results state
-      noResults.classList.toggle('visible', visible === 0 && f !== 'all');
-    });
-  });
-
 
   function toggleMobile() {
     const menu = document.getElementById('mobileMenu');
