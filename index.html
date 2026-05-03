@@ -153,25 +153,14 @@ nav {
 }
 .nav-links a:hover, .nav-links a.active { color: var(--text); }
 .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
-.nav-toggle {
-  display: none; flex-direction: column; gap: 5px;
-  background: none; border: none; padding: 4px; cursor: none;
-}
-.nav-toggle span { display: block; width: 22px; height: 1px; background: var(--text); transition: all 0.3s; }
+
+
 
 /* MOBILE NAV */
-.mobile-nav {
-  display: none; position: fixed; inset: 0; z-index: 490;
-  background: rgba(7,5,15,0.97); backdrop-filter: blur(20px);
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 36px; opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.mobile-nav.open { opacity: 1; pointer-events: all; }
-.mobile-nav a {
-  font-family: var(--font-serif); font-size: clamp(2rem,8vw,3rem);
-  color: var(--white); text-decoration: none; transition: color 0.2s;
-}
-.mobile-nav a:hover { color: var(--gold); }
+
+
+
+
 
 /* HERO */
 #hero {
@@ -596,12 +585,51 @@ footer span { color: var(--gold); }
 }
 @media (max-width: 680px) {
   .nav-links { display: none; }
-  .nav-toggle { display: flex; }
-  .mobile-nav { display: flex; }
+  
+  
   .projects-grid { grid-template-columns: 1fr; }
   body { cursor: auto; }
   #cursor-dot, #cursor-ring { display: none; }
 }
+
+
+
+
+/* CODE SHOWCASE */
+#code-showcase { background: var(--bg2); }
+.code-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+.code-tab {
+  padding: 8px 18px; border-radius: 99px; font-size: 0.75rem;
+  font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--muted); cursor: pointer; transition: all 0.25s ease;
+  font-family: var(--font-body);
+}
+.code-tab:hover { border-color: var(--border2); color: var(--text); }
+.code-tab.active { background: var(--gold); color: #07050f; border-color: var(--gold); }
+.code-panel { display: none; }
+.code-panel.active { display: block; }
+.code-file-header {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-bottom: none; border-radius: 12px 12px 0 0; padding: 12px 20px;
+}
+.code-filename { font-size: 0.8rem; color: var(--muted); font-family: monospace; display: flex; align-items: center; gap: 10px; }
+.code-filename::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); display: inline-block; }
+.code-lang-badge { font-size: 0.65rem; padding: 3px 10px; border-radius: 99px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.lang-dart { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+.lang-php { background: rgba(240,53,154,0.1); color: #ff85c5; border: 1px solid rgba(240,53,154,0.2); }
+.code-block-wrap { background: #0a0818; border: 1px solid var(--border); border-radius: 0 0 12px 12px; overflow: auto; max-height: 460px; }
+.code-block-wrap pre { margin: 0; padding: 24px; font-family: 'Courier New', monospace; font-size: 0.78rem; line-height: 1.7; color: #abb2bf; }
+.kw { color: #c678dd; }
+.fn { color: #61afef; }
+.st { color: #98c379; }
+.cm { color: #5c6370; font-style: italic; }
+.nm { color: #e06c75; }
+.tp { color: #e5c07b; }
+.op { color: #56b6c2; }
+.mt { color: #abb2bf; }
+
 </style>
 </head>
 <body>
@@ -621,14 +649,6 @@ footer span { color: var(--gold); }
 <canvas id="particle-canvas"></canvas>
 <div id="progress-bar"></div>
 
-<!-- MOBILE NAV -->
-<div class="mobile-nav" id="mobileNav">
-  <a href="#projects" onclick="closeMobile()">Projects</a>
-  <a href="#skills" onclick="closeMobile()">Skills</a>
-  <a href="#experience" onclick="closeMobile()">Experience</a>
-  <a href="#education" onclick="closeMobile()">Education</a>
-  <a href="#contact" onclick="closeMobile()">Contact</a>
-</div>
 
 <!-- NAV -->
 <nav id="mainNav">
@@ -638,11 +658,9 @@ footer span { color: var(--gold); }
     <li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#education">Education</a></li>
+    <li><a href="#code">Code</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="nav-toggle" id="navToggle" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
 <!-- HERO -->
@@ -1004,6 +1022,433 @@ footer span { color: var(--gold); }
 </div>
 </section>
 
+
+
+<div class="divider"></div>
+<section id="code-showcase">
+<div class="section-wrap">
+  <div class="section-label reveal">Source Code</div>
+  <h2 class="section-title reveal">Code Showcase</h2>
+  <p class="reveal" style="color:var(--muted);font-size:0.88rem;margin-top:-32px;margin-bottom:36px;font-weight:300;">Real production code from delivered projects — BLoC architecture, real-time systems, REST APIs, Google Maps &amp; more.</p>
+
+  <div class="code-tabs reveal">
+    <button class="code-tab active" data-tab="quran">Quran BLoC</button>
+    <button class="code-tab" data-tab="cemetery">Cemetery Map</button>
+    <button class="code-tab" data-tab="chat">Real-time Chat</button>
+    <button class="code-tab" data-tab="api">API Service</button>
+    <button class="code-tab" data-tab="firebase">Firebase CRUD</button>
+    <button class="code-tab" data-tab="laravel">Laravel Dashboard</button>
+    <button class="code-tab" data-tab="gps">GPS Routing</button>
+    <button class="code-tab" data-tab="athkar">Athkar BLoC</button>
+  </div>
+
+  <!-- QURAN BLOC -->
+  <div class="code-panel active" id="panel-quran">
+    <div class="code-file-header">
+      <div class="code-filename">quran_bloc.dart &mdash; Al Kawthar</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="kw">class</span> <span class="tp">QuranBloc</span> <span class="kw">extends</span> <span class="tp">Bloc</span>&lt;<span class="tp">QuranEvent</span>, <span class="tp">QuranState</span>&gt; {
+  <span class="kw">final</span> <span class="tp">QuranRepository</span> quranRepository;
+  <span class="kw">final</span> <span class="tp">SettingsRepository</span> settingsRepository;
+
+  <span class="fn">QuranBloc</span>({
+    <span class="kw">required</span> <span class="kw">this</span>.quranRepository,
+    <span class="kw">required</span> <span class="kw">this</span>.settingsRepository,
+  }) : <span class="kw">super</span>(<span class="fn">QuranInitial</span>()) {
+    on&lt;<span class="tp">LoadAllSurahs</span>&gt;(_onLoadAllSurahs);
+    on&lt;<span class="tp">LoadSurah</span>&gt;(_onLoadSurah);
+    on&lt;<span class="tp">ToggleBookmark</span>&gt;(_onToggleBookmark);
+    on&lt;<span class="tp">UpdateLastRead</span>&gt;(_onUpdateLastRead);
+    on&lt;<span class="tp">LoadRandomAyah</span>&gt;(_onLoadRandomAyah);
+  }
+
+  <span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_onLoadSurah</span>(
+    <span class="tp">LoadSurah</span> event, <span class="tp">Emitter</span>&lt;<span class="tp">QuranState</span>&gt; emit) <span class="kw">async</span> {
+    <span class="fn">emit</span>(<span class="fn">QuranLoading</span>());
+    <span class="kw">try</span> {
+      <span class="kw">final</span> surah = <span class="kw">await</span> quranRepository.<span class="fn">getSurahByNumber</span>(event.surahNumber);
+      <span class="kw">if</span> (surah == <span class="kw">null</span>) {
+        <span class="fn">emit</span>(<span class="kw">const</span> <span class="fn">QuranError</span>(<span class="st">'Surah not found'</span>));
+        <span class="kw">return</span>;
+      }
+      <span class="kw">final</span> ayahs = <span class="kw">await</span> quranRepository.<span class="fn">getAyahsBySurah</span>(event.surahNumber);
+      <span class="kw">final</span> bookmarks = <span class="kw">await</span> settingsRepository.<span class="fn">getBookmarks</span>();
+      <span class="fn">emit</span>(<span class="fn">SurahLoaded</span>(surah, ayahs, bookmarks));
+    } <span class="kw">catch</span> (e) {
+      <span class="fn">emit</span>(<span class="fn">QuranError</span>(<span class="st">'Failed to load Surah: </span>${e.toString()}<span class="st">'</span>));
+    }
+  }
+
+  <span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_onToggleBookmark</span>(
+    <span class="tp">ToggleBookmark</span> event, <span class="tp">Emitter</span>&lt;<span class="tp">QuranState</span>&gt; emit) <span class="kw">async</span> {
+    <span class="kw">if</span> (state <span class="kw">is</span> <span class="tp">SurahLoaded</span>) {
+      <span class="kw">final</span> currentState = state <span class="kw">as</span> <span class="tp">SurahLoaded</span>;
+      <span class="kw">final</span> bookmarks = <span class="tp">List</span>&lt;<span class="tp">String</span>&gt;.<span class="fn">from</span>(currentState.bookmarks);
+      <span class="kw">final</span> bookmark = <span class="st">'</span>${event.surahNumber}<span class="st">:</span>${event.ayahNumber}<span class="st">'</span>;
+      <span class="kw">if</span> (bookmarks.<span class="fn">contains</span>(bookmark)) {
+        <span class="kw">await</span> settingsRepository.<span class="fn">removeBookmark</span>(event.surahNumber, event.ayahNumber);
+        bookmarks.<span class="fn">remove</span>(bookmark);
+      } <span class="kw">else</span> {
+        <span class="kw">await</span> settingsRepository.<span class="fn">addBookmark</span>(event.surahNumber, event.ayahNumber);
+        bookmarks.<span class="fn">add</span>(bookmark);
+      }
+      <span class="fn">emit</span>(<span class="fn">SurahLoaded</span>(currentState.surah, currentState.ayahs, bookmarks));
+    }
+  }
+}</pre></div>
+  </div>
+
+  <!-- CEMETERY MAP BLOC -->
+  <div class="code-panel" id="panel-cemetery">
+    <div class="code-file-header">
+      <div class="code-filename">cemetery_bloc.dart &mdash; Dubai App</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="kw">class</span> <span class="tp">CemeteryBloc</span> <span class="kw">extends</span> <span class="tp">Bloc</span>&lt;<span class="tp">CemeteryEvent</span>, <span class="tp">CemeteryState</span>&gt; {
+  <span class="fn">CemeteryBloc</span>() : <span class="kw">super</span>(<span class="fn">CemeteryInitial</span>()) {
+    on&lt;<span class="tp">LoadCemeteryData</span>&gt;(_onLoadData);
+  }
+
+  <span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_onLoadData</span>(
+    <span class="tp">LoadCemeteryData</span> event, <span class="tp">Emitter</span>&lt;<span class="tp">CemeteryState</span>&gt; emit) <span class="kw">async</span> {
+    <span class="fn">emit</span>(<span class="fn">CemeteryLoading</span>());
+    <span class="kw">try</span> {
+      <span class="tp">Position</span>? position = <span class="kw">await</span> <span class="fn">_getCurrentLocation</span>();
+      <span class="tp">LatLng</span> userLatLng = position != <span class="kw">null</span>
+          ? <span class="fn">LatLng</span>(position.latitude, position.longitude)
+          : <span class="kw">const</span> <span class="fn">LatLng</span>(<span class="nm">25.276989</span>, <span class="nm">55.296249</span>); <span class="cm">// Dubai default</span>
+
+      <span class="kw">final</span> jsonString = <span class="kw">await</span> rootBundle.<span class="fn">loadString</span>(<span class="st">'assets/images/json/data.json'</span>);
+      <span class="kw">final</span> <span class="tp">List</span>&lt;<span class="kw">dynamic</span>&gt; jsonData = json.<span class="fn">decode</span>(jsonString);
+
+      <span class="tp">Set</span>&lt;<span class="tp">Marker</span>&gt; markers = {};
+      <span class="kw">if</span> (position != <span class="kw">null</span>) {
+        markers.<span class="fn">add</span>(<span class="fn">Marker</span>(
+          markerId: <span class="fn">MarkerId</span>(<span class="tp">LocaleKeys</span>.user.<span class="fn">tr</span>()),
+          position: userLatLng,
+          icon: <span class="tp">BitmapDescriptor</span>.<span class="fn">defaultMarkerWithHue</span>(<span class="tp">BitmapDescriptor</span>.hueBlue),
+          infoWindow: <span class="fn">InfoWindow</span>(title: <span class="tp">LocaleKeys</span>.YouAreHere.<span class="fn">tr</span>()),
+        ));
+      }
+      markers.<span class="fn">addAll</span>(jsonData.<span class="fn">map</span>((item) {
+        <span class="kw">final</span> lat = <span class="tp">double</span>.<span class="fn">tryParse</span>(item[<span class="st">'latitude'</span>].toString()) ?? <span class="nm">0.0</span>;
+        <span class="kw">final</span> lng = <span class="tp">double</span>.<span class="fn">tryParse</span>(item[<span class="st">'longitude'</span>].toString()) ?? <span class="nm">0.0</span>;
+        <span class="kw">if</span> (<span class="fn">_isLocationInUAE</span>(lat, lng)) {
+          <span class="kw">return</span> <span class="fn">Marker</span>(
+            markerId: <span class="fn">MarkerId</span>(<span class="st">'</span>$lat<span class="st">-</span>$lng<span class="st">'</span>),
+            position: <span class="fn">LatLng</span>(lat, lng),
+            infoWindow: <span class="fn">InfoWindow</span>(title: item[<span class="st">'name'</span>] ?? <span class="st">''</span>),
+          );
+        }
+        <span class="kw">return null</span>;
+      }).<span class="fn">whereType</span>&lt;<span class="tp">Marker</span>&gt;());
+
+      <span class="fn">emit</span>(<span class="fn">CemeteryLoaded</span>(markers: markers, initialPosition: userLatLng));
+    } <span class="kw">catch</span> (e) {
+      <span class="fn">emit</span>(<span class="fn">CemeteryError</span>(e.toString()));
+    }
+  }
+
+  <span class="kw">bool</span> <span class="fn">_isLocationInUAE</span>(<span class="kw">double</span> lat, <span class="kw">double</span> lng) =&gt;
+      lat &gt;= <span class="nm">24.0</span> &amp;&amp; lat &lt;= <span class="nm">26.0</span> &amp;&amp; lng &gt;= <span class="nm">51.0</span> &amp;&amp; lng &lt;= <span class="nm">57.0</span>;
+}</pre></div>
+  </div>
+
+  <!-- REAL-TIME CHAT -->
+  <div class="code-panel" id="panel-chat">
+    <div class="code-file-header">
+      <div class="code-filename">chat_service.dart &mdash; Mediconnect</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="cm">// Real-time chat using Socket.IO</span>
+<span class="kw">class</span> <span class="tp">ChatService</span> {
+  <span class="kw">static late</span> <span class="tp">IO.Socket</span> socket;
+  <span class="kw">static bool</span> isConnected = <span class="kw">false</span>;
+
+  <span class="kw">static void</span> <span class="fn">initSocket</span>(<span class="tp">String</span> userId) {
+    socket = <span class="tp">IO</span>.<span class="fn">io</span>(<span class="st">'http://127.0.0.1:3000'</span>, &lt;<span class="tp">String</span>, <span class="kw">dynamic</span>&gt;{
+      <span class="st">'transports'</span>: [<span class="st">'websocket'</span>],
+      <span class="st">'autoConnect'</span>: <span class="kw">true</span>,
+    });
+    socket.<span class="fn">onConnect</span>((_) {
+      socket.<span class="fn">emit</span>(<span class="st">'joinRoom'</span>, userId);
+      isConnected = <span class="kw">true</span>;
+    });
+    socket.<span class="fn">onDisconnect</span>((_) =&gt; isConnected = <span class="kw">false</span>);
+  }
+
+  <span class="kw">static void</span> <span class="fn">sendMessage</span>(<span class="tp">String</span> receiverId, <span class="tp">String</span> message) {
+    <span class="kw">if</span> (isConnected) {
+      socket.<span class="fn">emit</span>(<span class="st">'sendMessage'</span>, {
+        <span class="st">'receiverId'</span>: receiverId,
+        <span class="st">'message'</span>: message,
+        <span class="st">'timestamp'</span>: <span class="tp">DateTime</span>.now().<span class="fn">toIso8601String</span>(),
+      });
+    }
+  }
+
+  <span class="kw">static void</span> <span class="fn">onMessageReceived</span>(<span class="tp">Function</span>(<span class="tp">Map</span>&lt;<span class="tp">String</span>, <span class="kw">dynamic</span>&gt;) callback) {
+    socket.<span class="fn">on</span>(<span class="st">'receiveMessage'</span>, (data) =&gt; <span class="fn">callback</span>(data));
+  }
+
+  <span class="kw">static void</span> <span class="fn">joinRoom</span>(<span class="tp">String</span> roomId) {
+    <span class="kw">if</span> (isConnected) socket.<span class="fn">emit</span>(<span class="st">'joinRoom'</span>, roomId);
+  }
+
+  <span class="kw">static void</span> <span class="fn">dispose</span>() =&gt; socket.<span class="fn">dispose</span>();
+}</pre></div>
+  </div>
+
+  <!-- API SERVICE -->
+  <div class="code-panel" id="panel-api">
+    <div class="code-file-header">
+      <div class="code-filename">api_service.dart &mdash; Mediconnect</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="kw">class</span> <span class="tp">ApiService</span> {
+  <span class="kw">static const</span> <span class="tp">String</span> baseUrl = <span class="st">'http://127.0.0.1:8000/api'</span>;
+
+  <span class="kw">static</span> <span class="tp">Future</span>&lt;<span class="tp">Map</span>&lt;<span class="tp">String</span>, <span class="tp">String</span>&gt;&gt; <span class="fn">getHeaders</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> prefs = <span class="kw">await</span> <span class="tp">SharedPreferences</span>.<span class="fn">getInstance</span>();
+    <span class="kw">final</span> token = prefs.<span class="fn">getString</span>(<span class="st">'token'</span>);
+    <span class="kw">return</span> {
+      <span class="st">'Content-Type'</span>: <span class="st">'application/json'</span>,
+      <span class="st">'Accept'</span>: <span class="st">'application/json'</span>,
+      <span class="st">'X-Requested-With'</span>: <span class="st">'XMLHttpRequest'</span>,
+      <span class="kw">if</span> (token != <span class="kw">null</span>) <span class="st">'Authorization'</span>: <span class="st">'Bearer </span>$token<span class="st">'</span>,
+    };
+  }
+
+  <span class="kw">static</span> <span class="tp">Future</span>&lt;<span class="tp">http.Response</span>&gt; <span class="fn">bookAppointment</span>(<span class="tp">Map</span>&lt;<span class="tp">String</span>, <span class="kw">dynamic</span>&gt; data) <span class="kw">async</span> {
+    <span class="kw">return await</span> http.<span class="fn">post</span>(
+      <span class="tp">Uri</span>.<span class="fn">parse</span>(<span class="st">'</span>$baseUrl<span class="st">/appointments'</span>),
+      headers: <span class="kw">await</span> <span class="fn">getHeaders</span>(),
+      body: json.<span class="fn">encode</span>(data),
+    );
+  }
+
+  <span class="kw">static</span> <span class="tp">Future</span>&lt;<span class="tp">http.Response</span>&gt; <span class="fn">getDoctorsBySpecialty</span>(<span class="tp">String</span> specialtyId) <span class="kw">async</span> {
+    <span class="kw">return await</span> http.<span class="fn">get</span>(
+      <span class="tp">Uri</span>.<span class="fn">parse</span>(<span class="st">'</span>$baseUrl<span class="st">/doctors?specialty=</span>$specialtyId<span class="st">'</span>),
+      headers: <span class="kw">await</span> <span class="fn">getHeaders</span>(),
+    );
+  }
+
+  <span class="kw">static</span> <span class="tp">Future</span>&lt;<span class="tp">http.Response</span>&gt; <span class="fn">processWalletPayment</span>(<span class="tp">Map</span>&lt;<span class="tp">String</span>, <span class="kw">dynamic</span>&gt; data) <span class="kw">async</span> {
+    <span class="kw">return await</span> http.<span class="fn">post</span>(
+      <span class="tp">Uri</span>.<span class="fn">parse</span>(<span class="st">'</span>$baseUrl<span class="st">/wallet/payment'</span>),
+      headers: <span class="kw">await</span> <span class="fn">getHeaders</span>(),
+      body: json.<span class="fn">encode</span>(data),
+    );
+  }
+
+  <span class="kw">static</span> <span class="tp">Future</span>&lt;<span class="tp">http.Response</span>&gt; <span class="fn">getChatMessages</span>(<span class="tp">String</span> chatId) <span class="kw">async</span> {
+    <span class="kw">return await</span> http.<span class="fn">get</span>(
+      <span class="tp">Uri</span>.<span class="fn">parse</span>(<span class="st">'</span>$baseUrl<span class="st">/chats/</span>$chatId<span class="st">/messages'</span>),
+      headers: <span class="kw">await</span> <span class="fn">getHeaders</span>(),
+    );
+  }
+}</pre></div>
+  </div>
+
+  <!-- FIREBASE CRUD -->
+  <div class="code-panel" id="panel-firebase">
+    <div class="code-file-header">
+      <div class="code-filename">main_content.dart &mdash; BAPS Team</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="cm">// Firebase Firestore employee management with real-time pagination</span>
+<span class="kw">class</span> <span class="tp">_MainContentState</span> <span class="kw">extends</span> <span class="tp">State</span>&lt;<span class="tp">MainContent</span>&gt; {
+  <span class="kw">final</span> <span class="tp">FirebaseFirestore</span> _firestore = <span class="tp">FirebaseFirestore</span>.instance;
+  <span class="tp">List</span>&lt;<span class="tp">User</span>&gt; employees = [];
+  <span class="tp">String</span> selectedDepartment = <span class="st">'All'</span>;
+  <span class="kw">int</span> _currentPageIndex = <span class="nm">0</span>;
+
+  <span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">fetchEmployees</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> <span class="tp">QuerySnapshot</span> snapshot =
+        <span class="kw">await</span> _firestore.<span class="fn">collection</span>(<span class="st">'employees'</span>).<span class="fn">get</span>();
+    <span class="fn">setState</span>(() {
+      employees = snapshot.docs.<span class="fn">map</span>((doc) {
+        <span class="kw">final</span> data = doc.data() <span class="kw">as</span> <span class="tp">Map</span>&lt;<span class="tp">String</span>, <span class="kw">dynamic</span>&gt;;
+        <span class="kw">return</span> <span class="fn">User</span>(
+          id: doc.id,
+          name: data[<span class="st">'name'</span>] ?? <span class="st">'Unknown'</span>,
+          department: data[<span class="st">'department'</span>] ?? <span class="st">'Unknown'</span>,
+          designation: data[<span class="st">'designation'</span>] ?? <span class="st">'Unknown'</span>,
+          email: data[<span class="st">'email'</span>] ?? <span class="st">''</span>,
+          role: data[<span class="st">'role'</span>] ?? <span class="st">'Employee'</span>,
+        );
+      }).<span class="fn">toList</span>();
+    });
+  }
+
+  <span class="tp">List</span>&lt;<span class="tp">User</span>&gt; <span class="fn">getFilteredEmployees</span>() =&gt;
+      selectedDepartment == <span class="st">'All'</span>
+          ? employees
+          : employees.<span class="fn">where</span>((e) =&gt; e.department == selectedDepartment).<span class="fn">toList</span>();
+
+  <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="tp">User</span>&gt;&gt; <span class="fn">getPaginatedEmployees</span>(<span class="tp">List</span>&lt;<span class="tp">User</span>&gt; filtered) {
+    <span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="tp">User</span>&gt;&gt; pages = [];
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i &lt; filtered.length; i += <span class="nm">12</span>) {
+      pages.<span class="fn">add</span>(filtered.<span class="fn">sublist</span>(i, (i + <span class="nm">12</span>).<span class="fn">clamp</span>(<span class="nm">0</span>, filtered.length)));
+    }
+    <span class="kw">return</span> pages;
+  }
+
+  <span class="kw">void</span> <span class="fn">deleteEmployee</span>(<span class="tp">String</span> employeeId) <span class="kw">async</span> {
+    <span class="kw">await</span> _firestore.<span class="fn">collection</span>(<span class="st">'employees'</span>).<span class="fn">doc</span>(employeeId).<span class="fn">delete</span>();
+    <span class="fn">fetchEmployees</span>();
+  }
+}</pre></div>
+  </div>
+
+  <!-- LARAVEL DASHBOARD -->
+  <div class="code-panel" id="panel-laravel">
+    <div class="code-file-header">
+      <div class="code-filename">DashboardController.php &mdash; Mediconnect Dashboard</div>
+      <span class="code-lang-badge lang-php">PHP</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="kw">class</span> <span class="tp">DashboardController</span> <span class="kw">extends</span> <span class="tp">Controller</span>
+{
+    <span class="kw">public function</span> <span class="fn">index</span>()
+    {
+        $totalUsers        = <span class="tp">User</span>::<span class="fn">count</span>();
+        $totalDoctors      = <span class="tp">Doctor</span>::<span class="fn">count</span>();
+        $totalAppointments = <span class="tp">Appointment</span>::<span class="fn">count</span>();
+        $totalRevenue      = <span class="tp">Payment</span>::<span class="fn">where</span>(<span class="st">'status'</span>, <span class="st">'completed'</span>)-&gt;<span class="fn">sum</span>(<span class="st">'amount'</span>);
+
+        $recentAppointments = <span class="tp">Appointment</span>::<span class="fn">with</span>([<span class="st">'user'</span>, <span class="st">'doctor'</span>])
+            -&gt;<span class="fn">latest</span>()-&gt;<span class="fn">take</span>(<span class="nm">10</span>)-&gt;<span class="fn">get</span>();
+
+        <span class="kw">return</span> <span class="fn">view</span>(<span class="st">'dashboard.index'</span>, <span class="fn">compact</span>(
+            <span class="st">'totalUsers'</span>, <span class="st">'totalDoctors'</span>,
+            <span class="st">'totalAppointments'</span>, <span class="st">'totalRevenue'</span>,
+            <span class="st">'recentAppointments'</span>
+        ));
+    }
+
+    <span class="kw">public function</span> <span class="fn">apiStats</span>()
+    {
+        <span class="kw">return</span> <span class="fn">response</span>()-&gt;<span class="fn">json</span>([
+            <span class="st">'total_users'</span>            =&gt; <span class="tp">User</span>::<span class="fn">count</span>(),
+            <span class="st">'total_doctors'</span>          =&gt; <span class="tp">Doctor</span>::<span class="fn">count</span>(),
+            <span class="st">'total_appointments'</span>     =&gt; <span class="tp">Appointment</span>::<span class="fn">count</span>(),
+            <span class="st">'total_revenue'</span>          =&gt; <span class="tp">Payment</span>::<span class="fn">where</span>(<span class="st">'status'</span>, <span class="st">'completed'</span>)-&gt;<span class="fn">sum</span>(<span class="st">'amount'</span>),
+            <span class="st">'today_appointments'</span>     =&gt; <span class="tp">Appointment</span>::<span class="fn">whereDate</span>(<span class="st">'appointment_date'</span>, <span class="fn">today</span>())-&gt;<span class="fn">count</span>(),
+            <span class="st">'pending_appointments'</span>   =&gt; <span class="tp">Appointment</span>::<span class="fn">where</span>(<span class="st">'status'</span>, <span class="st">'pending'</span>)-&gt;<span class="fn">count</span>(),
+            <span class="st">'completed_appointments'</span> =&gt; <span class="tp">Appointment</span>::<span class="fn">where</span>(<span class="st">'status'</span>, <span class="st">'completed'</span>)-&gt;<span class="fn">count</span>(),
+        ]);
+    }
+}</pre></div>
+  </div>
+
+  <!-- GPS ROUTING -->
+  <div class="code-panel" id="panel-gps">
+    <div class="code-file-header">
+      <div class="code-filename">CemeteryArScreen.dart &mdash; Dubai App</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="cm">// Live GPS tracking with polyline route to grave location</span>
+<span class="kw">void</span> <span class="fn">_startLiveLocationUpdates</span>() {
+  locationStream = <span class="tp">Geolocator</span>.<span class="fn">getPositionStream</span>(
+    locationSettings: locationSettings,
+  ).<span class="fn">listen</span>((<span class="tp">Position</span> position) {
+    <span class="fn">setState</span>(() {
+      userLocation = position;
+      markers.<span class="fn">removeWhere</span>((m) =&gt; m.markerId.value == <span class="st">'userLocation'</span>);
+      markers.<span class="fn">add</span>(<span class="fn">Marker</span>(
+        markerId: <span class="fn">MarkerId</span>(<span class="st">'userLocation'</span>),
+        position: <span class="fn">LatLng</span>(userLocation!.latitude, userLocation!.longitude),
+        infoWindow: <span class="fn">InfoWindow</span>(
+          title: <span class="st">'Your Location'</span>,
+          snippet: distanceToGrave != <span class="kw">null</span>
+              ? <span class="st">'Distance: </span>${distanceToGrave!.toStringAsFixed(2)}<span class="st">m'</span>
+              : <span class="st">'Calculating...'</span>,
+        ),
+      ));
+      distanceToGrave = <span class="tp">Geolocator</span>.<span class="fn">distanceBetween</span>(
+        userLocation!.latitude, userLocation!.longitude,
+        widget.grave[<span class="st">'latitude'</span>], widget.grave[<span class="st">'longitude'</span>],
+      );
+      <span class="fn">_getPolylinePoints</span>();
+    });
+  });
+}
+
+<span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_getPolylinePoints</span>() <span class="kw">async</span> {
+  <span class="tp">PolylineResult</span> result = <span class="kw">await</span> <span class="tp">PolylinePoints</span>().<span class="fn">getRouteBetweenCoordinates</span>(
+    googleApiKey: apiKey,
+    request: <span class="fn">PolylineRequest</span>(
+      origin: <span class="fn">PointLatLng</span>(userLocation!.latitude, userLocation!.longitude),
+      destination: <span class="fn">PointLatLng</span>(widget.grave[<span class="st">'latitude'</span>], widget.grave[<span class="st">'longitude'</span>]),
+      mode: <span class="tp">TravelMode</span>.walking,
+    ),
+  );
+  <span class="kw">if</span> (result.points.isNotEmpty) {
+    <span class="fn">setState</span>(() {
+      polylines.<span class="fn">add</span>(<span class="fn">Polyline</span>(
+        polylineId: <span class="fn">PolylineId</span>(<span class="st">'poly'</span>),
+        color: <span class="fn">Color</span>(<span class="nm">0xFFF47C20</span>),
+        points: result.points.<span class="fn">map</span>((p) =&gt; <span class="fn">LatLng</span>(p.latitude, p.longitude)).<span class="fn">toList</span>(),
+        width: <span class="nm">8</span>,
+      ));
+    });
+  }
+}</pre></div>
+  </div>
+
+  <!-- ATHKAR BLOC -->
+  <div class="code-panel" id="panel-athkar">
+    <div class="code-file-header">
+      <div class="code-filename">athkar_bloc.dart &mdash; Al Kawthar</div>
+      <span class="code-lang-badge lang-dart">DART</span>
+    </div>
+    <div class="code-block-wrap"><pre>
+<span class="kw">class</span> <span class="tp">AthkarBloc</span> <span class="kw">extends</span> <span class="tp">Bloc</span>&lt;<span class="tp">AthkarEvent</span>, <span class="tp">AthkarState</span>&gt; {
+  <span class="kw">final</span> <span class="tp">AthkarRepository</span> athkarRepository;
+
+  <span class="fn">AthkarBloc</span>({<span class="kw">required this</span>.athkarRepository}) : <span class="kw">super</span>(<span class="fn">AthkarInitial</span>()) {
+    on&lt;<span class="tp">LoadAthkarCategories</span>&gt;(_onLoadAthkarCategories);
+    on&lt;<span class="tp">LoadAthkarByCategory</span>&gt;(_onLoadAthkarByCategory);
+  }
+
+  <span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_onLoadAthkarCategories</span>(
+    <span class="tp">LoadAthkarCategories</span> event, <span class="tp">Emitter</span>&lt;<span class="tp">AthkarState</span>&gt; emit) <span class="kw">async</span> {
+    <span class="fn">emit</span>(<span class="fn">AthkarLoading</span>());
+    <span class="kw">try</span> {
+      <span class="kw">final</span> categories = <span class="kw">await</span> athkarRepository.<span class="fn">getCategories</span>();
+      <span class="fn">emit</span>(<span class="fn">AthkarCategoriesLoaded</span>(categories));
+    } <span class="kw">catch</span> (e) {
+      <span class="fn">emit</span>(<span class="fn">AthkarError</span>(<span class="st">'Failed to load categories: </span>${e.toString()}<span class="st">'</span>));
+    }
+  }
+
+  <span class="tp">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_onLoadAthkarByCategory</span>(
+    <span class="tp">LoadAthkarByCategory</span> event, <span class="tp">Emitter</span>&lt;<span class="tp">AthkarState</span>&gt; emit) <span class="kw">async</span> {
+    <span class="fn">emit</span>(<span class="fn">AthkarLoading</span>());
+    <span class="kw">try</span> {
+      <span class="kw">final</span> athkarList =
+          <span class="kw">await</span> athkarRepository.<span class="fn">getAthkarByCategory</span>(event.category);
+      <span class="fn">emit</span>(<span class="fn">AthkarLoaded</span>(event.category, athkarList));
+    } <span class="kw">catch</span> (e) {
+      <span class="fn">emit</span>(<span class="fn">AthkarError</span>(<span class="st">'Failed to load Athkar: </span>${e.toString()}<span class="st">'</span>));
+    }
+  }
+}</pre></div>
+  </div>
+
+</div>
+</section>
+
+<div class="divider"></div>
 <!-- CONTACT -->
 <section id="contact">
 <div class="section-wrap">
@@ -1070,163 +1515,139 @@ footer span { color: var(--gold); }
 
 <script>
 /* LOADER */
-window.addEventListener('load', () => {
-  setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2200);
-});
+function hideLoader() {
+  var l = document.getElementById('loader');
+  if (l) { l.style.opacity='0'; l.style.visibility='hidden'; l.style.display='none'; }
+}
+setTimeout(hideLoader, 2000);
+window.addEventListener('DOMContentLoaded', function(){ setTimeout(hideLoader, 1800); });
+window.addEventListener('load', hideLoader);
 
 /* CURSOR */
-const dot = document.getElementById('cursor-dot');
-const ring = document.getElementById('cursor-ring');
-let mx=0,my=0;
-document.addEventListener('mousemove', e => {
-  mx=e.clientX; my=e.clientY;
-  dot.style.left=mx+'px'; dot.style.top=my+'px';
-  ring.style.left=mx+'px'; ring.style.top=my+'px';
+document.addEventListener('mousemove', function(e){
+  var dot = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  if(dot){ dot.style.left=e.clientX+'px'; dot.style.top=e.clientY+'px'; }
+  if(ring){ ring.style.left=e.clientX+'px'; ring.style.top=e.clientY+'px'; }
 });
 
 /* SCROLL PROGRESS */
-window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
-  document.getElementById('progress-bar').style.width = pct + '%';
+window.addEventListener('scroll', function(){
+  var bar = document.getElementById('progress-bar');
+  if(bar){
+    var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = pct + '%';
+  }
 });
 
-/* PARTICLE CANVAS */
-(function(){
-  const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
-  const COLORS = ['#c9a96e','#00d4ff','#f0359a','#4f35f3'];
-  let W,H,particles=[];
-  function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
-  resize(); window.addEventListener('resize',resize);
-  class Particle {
-    constructor(){ this.reset(); }
-    reset(){
-      this.x=Math.random()*W; this.y=Math.random()*H;
-      this.vx=(Math.random()-.5)*.45; this.vy=(Math.random()-.5)*.45;
-      this.r=Math.random()*2+0.8;
-      this.color=COLORS[Math.floor(Math.random()*COLORS.length)];
+/* ACTIVE NAV */
+window.addEventListener('scroll', function(){
+  var current = '';
+  document.querySelectorAll('section[id]').forEach(function(s){
+    if(window.scrollY >= s.offsetTop - 130) current = s.id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+/* REVEAL */
+var revealObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      entry.target.querySelectorAll('.skill-bar-fill[data-pct]').forEach(function(bar){
+        bar.style.width = bar.dataset.pct + '%';
+      });
+      revealObs.unobserve(entry.target);
     }
-    update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>W)this.vx*=-1; if(this.y<0||this.y>H)this.vy*=-1; }
-    draw(){
-      ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-      ctx.fillStyle=this.color; ctx.globalAlpha=0.45; ctx.fill(); ctx.globalAlpha=1;
+  });
+}, {threshold: 0.1});
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el){
+  revealObs.observe(el);
+});
+
+/* SKILL BARS */
+var barObs = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      setTimeout(function(){ entry.target.style.width = entry.target.dataset.pct + '%'; }, 200);
+      barObs.unobserve(entry.target);
     }
-  }
-  const COUNT=Math.min(80,Math.floor(W*H/15000));
-  for(let i=0;i<COUNT;i++) particles.push(new Particle());
-  function drawLines(){
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<120){
-          ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.strokeStyle=particles[i].color; ctx.globalAlpha=(1-dist/120)*0.14;
-          ctx.lineWidth=0.7; ctx.stroke(); ctx.globalAlpha=1;
-        }
-      }
-    }
-  }
-  function loop(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw();}); drawLines(); requestAnimationFrame(loop); }
-  loop();
-})();
+  });
+}, {threshold: 0.3});
+document.querySelectorAll('.skill-bar-fill[data-pct]').forEach(function(b){ barObs.observe(b); });
 
 /* MARQUEE */
-const marqueeItems=['Flutter Developer','4+ Years Exp.','18+ Apps Shipped','0% Revision Rate',
+var marqueeItems = ['Flutter Developer','4+ Years Exp.','18+ Apps Shipped','0% Revision Rate',
   'Fujairah Government UAE','Google Play Store','App Store','Dart Expert',
   'Firebase','BLoC Architecture','Cross-Platform Engineer','Freelance Available'];
-const track=document.getElementById('marqueeTrack');
-[...marqueeItems,...marqueeItems].forEach(text=>{
-  const el=document.createElement('div'); el.className='marquee-item';
-  el.innerHTML=`<span class="marquee-dot"></span>${text}`; track.appendChild(el);
-});
+var track = document.getElementById('marqueeTrack');
+if(track){
+  marqueeItems.concat(marqueeItems).forEach(function(text){
+    var el = document.createElement('div');
+    el.className = 'marquee-item';
+    el.innerHTML = '<span class="marquee-dot"></span>' + text;
+    track.appendChild(el);
+  });
+}
 
-/* SKILLS BARS */
-const skills=[
-  {name:'Dart',pct:95,color:'linear-gradient(90deg,#c9a96e,#00d4ff)'},
-  {name:'Flutter',pct:95,color:'linear-gradient(90deg,#00d4ff,#c9a96e)'},
-  {name:'Firebase',pct:85,color:'linear-gradient(90deg,#f0359a,#c9a96e)'},
-  {name:'BLoC',pct:85,color:'linear-gradient(90deg,#4f35f3,#00d4ff)'},
-  {name:'Provider / Riverpod / GetX',pct:85,color:'linear-gradient(90deg,#00d4ff,#f0359a)'},
-  {name:'RESTful APIs',pct:85,color:'linear-gradient(90deg,#c9a96e,#4f35f3)'},
-  {name:'Mobile SDK Integration',pct:85,color:'linear-gradient(90deg,#00d4ff,#c9a96e)'},
-  {name:'Git / GitHub / GitLab',pct:85,color:'linear-gradient(90deg,#f0359a,#00d4ff)'},
-  {name:'SQLite / Hive / Firestore',pct:80,color:'linear-gradient(90deg,#c9a96e,#f0359a)'},
-  {name:'GraphQL',pct:65,color:'linear-gradient(90deg,#4f35f3,#c9a96e)'},
-  {name:'PHP / Laravel',pct:80,color:'linear-gradient(90deg,#c9a96e,#4f35f3)'},
-  {name:'Java',pct:80,color:'linear-gradient(90deg,#f0359a,#4f35f3)'},
+/* SKILLS */
+var skills = [
+  {name:'Dart', pct:95, color:'linear-gradient(90deg,#c9a96e,#00d4ff)'},
+  {name:'Flutter', pct:95, color:'linear-gradient(90deg,#00d4ff,#c9a96e)'},
+  {name:'Firebase', pct:85, color:'linear-gradient(90deg,#f0359a,#c9a96e)'},
+  {name:'BLoC', pct:85, color:'linear-gradient(90deg,#4f35f3,#00d4ff)'},
+  {name:'Provider / Riverpod / GetX', pct:85, color:'linear-gradient(90deg,#00d4ff,#f0359a)'},
+  {name:'RESTful APIs', pct:85, color:'linear-gradient(90deg,#c9a96e,#4f35f3)'},
+  {name:'Mobile SDK Integration', pct:85, color:'linear-gradient(90deg,#00d4ff,#c9a96e)'},
+  {name:'Git / GitHub / GitLab', pct:85, color:'linear-gradient(90deg,#f0359a,#00d4ff)'},
+  {name:'SQLite / Hive / Firestore', pct:80, color:'linear-gradient(90deg,#c9a96e,#f0359a)'},
+  {name:'GraphQL', pct:65, color:'linear-gradient(90deg,#4f35f3,#c9a96e)'},
+  {name:'PHP / Laravel', pct:80, color:'linear-gradient(90deg,#c9a96e,#4f35f3)'},
+  {name:'Java', pct:80, color:'linear-gradient(90deg,#f0359a,#4f35f3)'}
 ];
-const techChips=['Dart','Flutter','Firebase','BLoC','Provider','Riverpod','GetX',
+var techChips = ['Dart','Flutter','Firebase','BLoC','Provider','Riverpod','GetX',
   'REST APIs','GraphQL','SQLite','Hive','MySQL','Firebase Firestore','Git','GitHub',
   'GitLab','Figma','Postman','PHP','Laravel','Java','CI/CD','Android','iOS',
   'App Store','Google Play','Agile/Scrum','Unit Testing','Push Notifications',
   'Video Calling','Payment Gateways','Real-time Chat','Localisation','Offline Mode'];
-const grid=document.getElementById('skillsGrid');
-skills.forEach((s,i)=>{
-  const d=(Math.floor(i/2)*0.08).toFixed(2);
-  grid.innerHTML+=`<div class="skill-item reveal" style="transition-delay:${d}s">
-    <div class="skill-header"><span class="skill-name">${s.name}</span><span class="skill-pct">${s.pct}%</span></div>
-    <div class="skill-bar-track"><div class="skill-bar-fill" data-pct="${s.pct}" style="background:${s.color}"></div></div>
-  </div>`;
-});
-const cloud=document.getElementById('chipCloud');
-techChips.forEach(chip=>{ const el=document.createElement('span'); el.className='tech-chip'; el.textContent=chip; cloud.appendChild(el); });
 
-/* REVEAL OBSERVER */
-const revealObs = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      entry.target.querySelectorAll('.skill-bar-fill[data-pct]').forEach(bar=>{ bar.style.width=bar.dataset.pct+'%'; });
-      revealObs.unobserve(entry.target);
-    }
+var grid = document.getElementById('skillsGrid');
+if(grid){
+  skills.forEach(function(s, i){
+    var d = (Math.floor(i/2)*0.08).toFixed(2);
+    var div = document.createElement('div');
+    div.className = 'skill-item reveal';
+    div.style.transitionDelay = d + 's';
+    div.innerHTML = '<div class="skill-header"><span class="skill-name">'+s.name+'</span><span class="skill-pct">'+s.pct+'%</span></div>'
+      + '<div class="skill-bar-track"><div class="skill-bar-fill" data-pct="'+s.pct+'" style="background:'+s.color+'"></div></div>';
+    grid.appendChild(div);
+    revealObs.observe(div);
   });
-},{threshold:0.1});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revealObs.observe(el));
+}
 
-const barObs=new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{ if(entry.isIntersecting){ setTimeout(()=>{ entry.target.style.width=entry.target.dataset.pct+'%'; },200); barObs.unobserve(entry.target); }});
-},{threshold:0.3});
-document.querySelectorAll('.skill-bar-fill[data-pct]').forEach(b=>barObs.observe(b));
+var cloud = document.getElementById('chipCloud');
+if(cloud){
+  techChips.forEach(function(chip){
+    var el = document.createElement('span');
+    el.className = 'tech-chip';
+    el.textContent = chip;
+    cloud.appendChild(el);
+  });
+}
 
-/* ACTIVE NAV */
-const sections=document.querySelectorAll('section[id]');
-const navLinks=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',()=>{
-  let current='';
-  sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-130) current=s.id; });
-  navLinks.forEach(a=>{ a.classList.toggle('active',a.getAttribute('href')==='#'+current); });
+/* CODE TABS */
+document.querySelectorAll('.code-tab').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var key = this.dataset.tab;
+    document.querySelectorAll('.code-tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.code-panel').forEach(function(p){ p.classList.remove('active'); });
+    this.classList.add('active');
+    var panel = document.getElementById('panel-' + key);
+    if(panel) panel.classList.add('active');
+  });
 });
-
-/* MOBILE NAV */
-function toggleMobile(){
-  document.getElementById('mobileNav').classList.toggle('open');
-  document.body.style.overflow=document.getElementById('mobileNav').classList.contains('open')?'hidden':'';
-}
-function closeMobile(){
-  document.getElementById('mobileNav').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('navToggle').addEventListener('click',toggleMobile);
-
-  const CV_B64 = "JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgMTAgMCBSCj4+CmVuZG9iagoyIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMSAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtQm9sZCAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjIgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago0IDAgb2JqCjw8Ci9BIDw8Ci9TIC9VUkkgL1R5cGUgL0FjdGlvbiAvVVJJIChodHRwczovL2dpdGh1Yi5jb20vTm8wc2EpCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMTY2LjY5MSA3MTYuNjY2MSAyMzUuMTkyNSA3MjYuODY2MSBdIC9TdWJ0eXBlIC9MaW5rIC9UeXBlIC9Bbm5vdAo+PgplbmRvYmoKNSAwIG9iago8PAovQSA8PAovUyAvVVJJIC9UeXBlIC9BY3Rpb24gL1VSSSAoaHR0cHM6Ly9ubzBzYS5naXRodWIuaW8pCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMjQyLjEyODUgNzE2LjY2NjEgMjk5Ljc3NTUgNzI2Ljg2NjEgXSAvU3VidHlwZSAvTGluayAvVHlwZSAvQW5ub3QKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0EgPDwKL1MgL1VSSSAvVHlwZSAvQWN0aW9uIC9VUkkgKGh0dHBzOi8vbGlua2VkaW4uY29tL2luL25vc3liYS1tdWRhdGhpcikKPj4gL0JvcmRlciBbIDAgMCAwIF0gL1JlY3QgWyAzMDYuNzExNSA3MTYuNjY2MSA0MjguNTg0NSA3MjYuODY2MSBdIC9TdWJ0eXBlIC9MaW5rIC9UeXBlIC9Bbm5vdAo+PgplbmRvYmoKNyAwIG9iago8PAovQW5ub3RzIFsgNCAwIFIgNSAwIFIgNiAwIFIgXSAvQ29udGVudHMgMTUgMCBSIC9NZWRpYUJveCBbIDAgMCA1OTUuMjc1NiA4NDEuODg5OCBdIC9QYXJlbnQgMTQgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIAogIC9UcmFucyA8PAoKPj4gL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjggMCBvYmoKPDwKL0EgPDwKL1MgL1VSSSAvVHlwZSAvQWN0aW9uIC9VUkkgKGh0dHBzOi8vbm8wc2EuZ2l0aHViLmlvKQo+PiAvQm9yZGVyIFsgMCAwIDAgXSAvUmVjdCBbIDI0Ni40NzE2IDY1NC44NjYxIDMwNC4xMTg2IDY2NS4wNjYxIF0gL1N1YnR5cGUgL0xpbmsgL1R5cGUgL0Fubm90Cj4+CmVuZG9iago5IDAgb2JqCjw8Ci9BIDw8Ci9TIC9VUkkgL1R5cGUgL0FjdGlvbiAvVVJJIChodHRwczovL2dpdGh1Yi5jb20vTm8wc2EpCj4+IC9Cb3JkZXIgWyAwIDAgMCBdIC9SZWN0IFsgMzYzLjQ5OTYgNjU0Ljg2NjEgNDMyLjAwMTEgNjY1LjA2NjEgXSAvU3VidHlwZSAvTGluayAvVHlwZSAvQW5ub3QKPj4KZW5kb2JqCjEwIDAgb2JqCjw8Ci9CYXNlRm9udCAvWmFwZkRpbmdiYXRzIC9OYW1lIC9GMyAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjExIDAgb2JqCjw8Ci9Bbm5vdHMgWyA4IDAgUiA5IDAgUiBdIC9Db250ZW50cyAxNiAwIFIgL01lZGlhQm94IFsgMCAwIDU5NS4yNzU2IDg0MS44ODk4IF0gL1BhcmVudCAxNCAwIFIgL1Jlc291cmNlcyA8PAovRm9udCAxIDAgUiAvUHJvY1NldCBbIC9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUkgXQo+PiAvUm90YXRlIDAgCiAgL1RyYW5zIDw8Cgo+PiAvVHlwZSAvUGFnZQo+PgplbmRvYmoKMTIgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyAxNCAwIFIgL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjEzIDAgb2JqCjw8Ci9BdXRob3IgKFwoYW5vbnltb3VzXCkpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA0MjgwOTA2NDYrMDAnMDAnKSAvQ3JlYXRvciAoXCh1bnNwZWNpZmllZFwpKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA0MjgwOTA2NDYrMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAoXCh1bnNwZWNpZmllZFwpKSAvVGl0bGUgKFwoYW5vbnltb3VzXCkpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKMTQgMCBvYmoKPDwKL0NvdW50IDIgL0tpZHMgWyA3IDAgUiAxMSAwIFIgXSAvVHlwZSAvUGFnZXMKPj4KZW5kb2JqCjE1IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDMyNTkKPj4Kc3RyZWFtCkdhdWBVPkJmJ2QmcTk6VlRwT0hNQ15AOyorWWBNbixiWzpua0xQM1NtNV8oT0tGc2trZ04oSlwxPGMuLl5MJ1JAMGRKJTotKnQvOTgxTjAnXjYyYWBpN2csPUs4P2RyI3MzSiExPXAkIjNIUC5iY1InSEUzLWssV05FYVduKjRIb2toPV1FP2Y1KCZqPm8yZlxnaUQwQWBPPmc0YD5kMEdYKTEqVV9BNDI2SGFKTGlkMD1ML0QwOCEoNCk/Wl5OTjtDOG1qQTNcSCQ7MDZTPCVRO0FzNUkzalBUPENFdU1SYkpGQkJxb0RMXl8/NUh0aEQjPTVXYzw7NzNTJy0tTSNsMzVuPmQpV0FIJSNGc0AuJW0hQjo3LTU5XGJQJi0kXTlVPylqazQiV0peWS1qLSY0J2xPTVFDNmJaTzJeLU4wOGs4IjBARCVdLCZAckttRi8qQmRvNlBRTEh0SWw6al82ckZhIWVSV0QtNyRFR24pc09jV2dsPTRjZCNMJWVyM1Y1UVBXZkg5VVorU00hKmA8UCJYaS4lZyRHLko4MCsmWFFvVjpfQUc6TWNHcD82PlRQTDdMNkpAVVNlclFTTl1SYnFqKkUsXWRDc0BMTFo8dGJhLydocGNIJmI6PEYjaSVJZSpTQGYhMCs5VGouKzFtSU5DMHBBa0YwJm4wLHFJKGlNZylFIUdIVV5vMmY1ZkkpbEVMVDxxLyokNmhTKz1NKVxOYlNIWiUkdUg+VTxKQ3FQW1RcJG5ZUWNUI2EtRVMrV0Y3VXBnaUdyYEQ1XWJHSXE5XGw6OXI0XGFyRFBwNlpjTnJyXEdEJ3BGL0FoNUE5WnFicFpjPCpqajRPZXBhcl1JbGJXZkpjXzAqb01dVjZWTCI5Zzc2NVcibWZLLnIpRC82R09BQU5YPE5mOSwlIVM6N3BYWHJeXFRZND9nTCZrMHJALy8tNksmOSxRWV09KDsqZVFlbiFWWF1ibVsxRkxaXE1GZ2EnInIlYlA/YGoxPVhOMHM4LUpxMT1oJXIqO0M3NWNlRlg2LGE9SWlxO1c6OTIxPDxQZmo7O0xpcCI1P0NgJiJPVk46REY/XzNUXC5mZVZKKFAlPmdPJlY7M1cyT1xISEwtMVYiYjsxJFk5VCQ0ITBUQU0rSWhsMCJFbWZbJyQyVnIzIyFdLkYnMmNuOUgvPmdWLSJrTSEsb1s6Rm1Oa0dNVzVZKi5VYCVXRCcrPjtJLlQ/czwkLlVMLFdPMFdeVEciSlsoUWA5Qj5cRD0oKD87YXE5cFRDdTJXP0d1I1s1LDAyLDVkUkJwMlRTYkYtXk9HIl5PXmU/JGRLTTxzOSNUOjZRP1wmN2BIU3FoLSQxSjRiWE9gXmVnYGRYPVhCT2BwaF82JSJJKFNAXWlAcWhfUWpMUTlOaDBoKzFkdCE0JE1SPSE+Mmw6SysqKkFkMkw/IWJaMFY7XC8lYl4rPmppcWEiXUsuJkJhOD41a1tlczI4bF0wbCdlKSlzX2dXbHQrL2UuaiZfX1VjZHF0KnAoMSQsQz1EZSs6bjwtaihDLyVyYTRPWEplWlojUUdbUktKdTIyOiFbT0JWJGI+PmhHQ2RbQD5OaWpcVC9xVjh0WjRaSnVIMzErTzIpIz1BWyZlW1FsMGFbLUxlSnVQLFhGKy5VQDAiQyRkQzB1R01wVW9FWkIlPWVFNS4vXzdVU0g5b3FmaXEjLlEnKDFUTTAoQ04hcEpgakNmT3M0PVszSFFUYyhePmY3cGUhISgiKSwmKkRcYXM/XTAsXzchZUImPiZGSjlJVD9RMlBxPD03ZUNVamEuJ2ZeWG9zYGckbiVIbjkwSU0pIitgPjpFXGVUTE9pW1hHTyJmQDFNZT9sZlw5UiNeNEVwO2p1bkVhJHMiayk7J0deVWZdWz5OMUopa1ouOmlyRk1USmpNTU9mUTIpJ11BPjxdZF8/bVc7WDhrUE0+TmJnRkxlPyRjMSlIWmQkaSgmajw9NGwtZU5MVjNjLElXQ0pdI2NNdCNQLGRQJ2BbREEkYjZPPF5WLUdQXitnbUdwTUo4NDJxJjZsQy81SV01OGtmbTA+QS1FcGsqaCYkckRwWl8/UjZNPmszO0d1YXUmQ3VXPUpmOUkpIkc4KDheQl88XTUodWlZU1BKWlFNZDtMZmMoJ1JcTTJzKS1aKyMuOGI6Njw5O2UiQT5qZihhXmNbcyt1L0RgOUc3RlZkaFU9JDpJWlhxMTJNQ0YrS2UrdE8rVUdKOS9GbSJtc2dOa11IZlZEUUtyWUhEOXEsWlVQWE8zUUg2RiEic0xAQjY1QjA+U20ic3JPbFQqUi4xXFRNV29aUyliQ0csJ04iVy03VWA+dEchMVByTUMpK3EsQ3IiQ0FqUVY+XiFVcDFNQlBpOiVRU20zPzc8YzhNVkJwL1pbQXJuNWE8MW1mLyohc19IRGZ0cGpwTy9yIWx0YEU/TlBVcCIjOGI1R3NIWl0naEAzKDg+THBrYidGJz4rYmI+dS5sYSkkOUZkZ0cjdSo4bkZeVldlJ2U/KFxKXTlRSCxnMEIkYT4vSDxuL2hLT1g9MGkvKnRfPW1hREpCLDpldGVcN2k9WTw5SlBFTC9bWUUjbGhTQD5jXidITyFhPUFJTWtyLGEkRlopYUBHZDBrPDAzOzVOLld0P1MtT2A+SCJNQ0IqZWVRTDldbSE5S01cUG9DXEtkRF9yM189OiFXaUwuXDgsbVdAclNOKXAvZkhtV1NWay0qbGdDRnFkVHU6KEFNSy5xODNtQWI8XyxVbyo9XnIoYV8uUzFsZUgsLjs0Yy9xQyNvQEBkKTVkRGorXk9lJTM5bT0xPUBtMktnW1htIjlBVzQuLickcVEqRzMoJl04JipKT1dcVCdxPSstYUY8N2o5cmtmaypeIThFalw0M01pajAjLXRjbkJjKTpyRkg+Mig8XSQkKEdXIVZiNiVeO1VgWSRIN1w+LUhROGNHLj9kbiNwUjlwLEFbWDRsRj8iTFMmWlkzV2NxRzBiIXI6WC1SbzplM3U7clpBKFVrdTU6bUdCVztUSzZpVTBTNHAvaGlVUytjZ20zXj1AKThRa2ldY1NIbGhVUVdldXBRLFhlUk9TMGA/XSY/YDlXYTBKb1YkNltxUjcoK19Jcj9jIkNGPmJHSWVuLmVvaWpRVmlILlBoN1VlO1BgZDNJQUI/K245Mz4xbmdyPmpWV1xhTTUiXi4wTVxKPzwhR2htQnFZWzs6Z25qQWcuWjcnXlZoW2xjRk83OD9nSyRSOSNIQl9acUlHdWZnUTpJVSVXbWtoWC8nZUAzSl9SKlNYJT5PVTMhMStOUipDVVo0MXJPVF9cTjpvXUU+OStLWF1lWlRgaUo0LS1bbHFpVTo7IkcmJ0pjVlhoXSElQjpeSF1tMUkubkJTbThUNGNBUyNaYj8jcE5BTVhiKHAkU01PWEtNLjsiMCZbUDtBSmo4TV5fQDtQRWxxOS1VYHRpcU01IjVuXFZgODZzLD1YKlJXbjYsQVNnZC1TZUEiPm4uclQpJUkqNj4saTQ5RV44TGlMVCYjcUktRFRuLTRhKU9KSGB1KEddRFhlaElpKS5UJSxfMEwwRjNVSDZdZUEwazBQaztWb1JBaUc7N2MxNzNHRVI8WHIiIUhxYyFmWGEma0NSLVdFITk+J2RpbzMnQVxTKj1uJyFaUlc4PzNWQTpaK0s+IVZbUCdwOUQtSyFTVW5tJFZeZzt0R1luOC4wNS9QVks4aFtYIzo+TTxKJEQ6MSNyNV5TYUxUcFMyYmMqSSoyJjouPEdTYTtJakhpbzZlUFZlWk5qSVFXYVJlR2cpZk5aVmUhM1E0NCMkLU9oWFZcOFJSPmRDKCtqdEsnXW04SSg+ZzkmJW5VQ2YsT0ZwVG45QCVnUk1LKDZUNUBlZzg1RENQaEZXMSFPPUdyWmwqKE1QRkpgJWsrLXBSQm03Pk4sNUI4ajBjP1JTP11AZWMoTXMidUZFK1MrT1lzKVBiM2BCIzFKZlpbXWA2TUJfc2AmTjUiYWpdUm1HYDtpOi8hXUQsNUAqX2ZgMyNGaElDPXFqc25YOC1CQktRSk5KLGpdNytoPEJGSCdPSzMuIWEicFImUkZDQiVPZShqZU0+ZjxfXi9bZV1qLmM6TWspaTQ9J2AmSz5fRUYuRXA6YTluREosPCVXcD5FbDdCUSMjKU04KjZROiUubiNgamArZipMLGA8P0EubSpoRzJXRUFtaihSPU05YEEzSTI7RmM0VSsmXWZMLWQqRVdXcWElczBJRm4lcW90MkMtaVYkPTlPV04oVDcjdCZEaCVyM21aQm4oaE51dUpQWCE7dV81Q3FXbSRpfj5lbmRzdHJlYW0KZW5kb2JqCjE2IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDI3NzIKPj4Kc3RyZWFtCkdiISNePj5zUUMmcTZIW2Q0XC1JNCFGQmJnSDk8WWFjSkxjNjUkYDhbY1UjYFB1by8lKm5jOiIzXjxWTm0rO1VeKjZkQ3VbODksKT8hQDMrcXMvLCsnK0Zkc2UpLCRDRTQxO0dPVTdsZ01cVlVTZHQsSWEkbD5PYklQTmlGPkB1P2dtJ1spYlQlMzI5Z0VxcnVBZzsubmxWSTxiN1FRMXBiQk8rTWgvI1gyWy5QNyVzMzJuRHA6JE1DPTlMVWEiXlYnXVREJiZNYCsyRmApTFtAWipBJTJoImw4LDI8Z1tVWiNoLSNkMTlFSGBGXlk1ZldEJUEvayhrSWRBVjBtbWBEVFMuRVNVOjBMaUI/ZmoicFY7RTQ1U2UtJlosR1w2b2lOXXEuQEYjXmVpUDBpXDhJKGxATDxjX1hlX0pGTS5taVAyQExRa1Y2OSwkJ2xBJTpnWFhVSGo5PG5MSS9nZ1BdVjxIR18lM14nPm1cPm5dXiE6dTUrT1FVSW5nWkVAWVJMJDRTTGU1cDImPmgiKTwnLk9QSWJOY2tYTTolOSZAInIuOD1sYSc3Z3JoKT8tRGJudCg+R2JvUUwhMiRsPjgobUgqOXIyYypYNmgzRklaXlJXM1g3Rz8jOGRSYnMtJER1VHEmMWgoNl9eJDE6cWJZdCxySmdpJ0NSdGwmJ0VxcERbIStORlJwaUxKSElATWR0aj44aWE5RSlgRnE+YkUxO2pUTWQ8PUpKR2BkJV9cSERlNj9YWU5RJztmbVhuKiRabGNzJ3BtNmBKIWFqSlBqLUJSN09cQG9KMUA2ZmNxWzIvYFNDMmIyK1tPNVtjdF4zbE1saSJYUUk7ZkM7K0g6Nm5lPzwoSTNXVmFNXWMiQDQ2IV1AL0dbOythOC1XU2VFZExnbGJTYz5gV0RPYFpjbT0jNDolTWVOInJHVzBzbFtROF0wbEtoIT9hcj9eZD9aMjsxTF0sM1pDajZIPWclRyp1P25qPWpfUUVIUllBJWdMR01zLzJIblg9KGZzYWEkU0tcJzNDR21jRkNaPk1QSDBQNVlDTm9ham1GI15uRFFpOmE/Km0+SG1eLGZCamtxXSc8clBFWSZhNkxlVlVLNnRIZUJGO2ckPGBkRkYrJVJaWjBYVCpVW2ByY2RrOyNUL19FS2ptay05W29MOipLTW9jPmFkRTlnZCEkWDRuckM8Nk9pMz4qP0c7ODgvPk5sP2sqajg8Wj47OmFvZm9ZbnBfMmRGOyhgI1JITSRPWCFdRXVoMSx1dHFaNz1MV21IajJlWUBhKDZpUHNMWyQoaGclO1AlO1M1ZWk0N2xnSGcsay5vSl43YGNaWk1ZSiMkKmlLXl9ZbFY/NEBBX3JIYUY3Uk02PlR1Q1lrUSUtKTRiJ05YJUg2Wz9SYS5DIW01OHM+WGddX1xRWmdNL1Y3X19vRSI+KTZqaDlcSmAzTSthIVI8Jk44bD5GaUAnYEY7VzAlYiUyci5CLSI/aVZPMToqVSdOQ3BtIiYmR1tkQFVfV0cjOHBNZk40OWBNQCFOZlBVbHAmOyYkO15gbjw1SV0yOyZALktXSDxEND41M1g+Njl0by1eU3I1RS4oSicyMiE0RFlDPiNwSzRVazEoZ0VEL3U/M05TSmlXOUxVZUxxXVNJaTIlMSFSZlpTXGllY0JhP2RWWnFlXC01SFsjXmhVZDo7JC8jPEIlTHJkUUM9PytrbSpQLV8lMTdgLmB1cnJGWGsvIVkpZ0AzcFxrcCMwbUNKb1ZdJTYuYzU0aiJOW2xaYWVaNmwjcV0sU1hPME9hMzBDcjxhS1NvVio3KE8tTjgiOV5MaVRbZz5CXFVES1dqIlxBV242bkhlUCojTC5aZEw5WDM/citPUSZUZV4wJUhNaCU4NyNvclpfbiQ+ZWc9Nz9yJDNiUDUhLToxQmJHMEgrTW5ZbihJcS43dXAkbj5YSEFcaEFJI0BsRUZqXHRxO3JmQlo5bU0nPS1CLlpJTGFNPls3OFFCKURzST5QMSFeXDI8bzFyQCdwVjhLTT8zOCxxRiYiZ2NASlFTVFJrakBSdWhrUyIuQEZGO3VMQlxOY09hcCI5RT5DQ2gqOnBoQCFxYyk7VE5iMixIKG1qMDgtK2hvcFBiPShIMlw3V0VXWHI/ME41a1EqYGcoWkRKUiU+NnFjWlA+OVpzXHBiMDF1ODwoN0UtQ2MyI2lXQDNXKk5UcToraz80Mj1NbmY0RWphX0w5R0VVaEVtKzlIWWljM2FBOyIzaHE6RiolaylEbTBjQ0pFaklVbSxvP0UrVCI4ZXEuUWAtK1JAYjFxallrdV8zaDY0by50VzhfRCQ7cmtBUnFPWFM5KWFiJmcrL2lYbkQ+WEAkYlQqTlwoUl5nZShPJVs1TUdeLEgsR1ZYTUBdUThaWClZMllAPyw0KCVpal9yOzpwZzMmckEpREs/YldaLDtHcChvZ09bK0xhYltrPDAvRVhMKFJrc0w7UVE7RVpHY2svZ0BrSG8mJ1E5NllgTEFLNFwqJSMwY2YwTVdQNFNPJl1DclhWZC4qVDZeZj5LNmp0SmUzQTpKMnJIKDtWODVUTF5qJlZbLk4kV0tRWFZFaGVsPU9fYmhtP3BxKF5XTm0raCNwMChjaSM1Lko9dGMlZ0BOUC8yK0cobHVbaHJhTDgnPE1BLVEwc1MiX0wyJkErRmddSExxOzYyV0MtJEwuKS1WYytQUUc5J0wiWWA4K1ZhSzJJLjIyRys1b085cDhsUmhXPUNVImpdaj5gUVs0R0xGKEZtI2woUEYmWDAvY29lRDctdEhTNGQpXGtkITUxMlROUlU/PCNLVD9jW2ciNCM4RVtTTTdqXC4vNC4qbSEsOi80P10haWUvJi40cSpBSjZXZmIhKj1zRHFGcDRyU0dvbzEjXWskLG9IPU80LEhESCw4MyFHJTZVaExLUCIvWixuW3NxLFFgMm9EdGtqZytGLl83SDtQVFMwZ2QmWklgWVNvb2BcO3FnaiVsJE1uVFU0WG5PXDxeZWlGbENvVmY/LShWOGxRZDB1LWw8XzouSyFtVyZrcWYlV2FWaV1jXjFqMFFqI2xTdWEkO1Q0VjgnalxvTCtHMSEubjxASj9tYFhMLTU+ciNXRyRTJy83OTU3UCIlSExJOkBEMU5kMyxtZik+JidxM11sNnQqSHM2Z244UlplaHQzPDgyTE9JO2csLHM9ZWRLR2NVcVYlRFFGXzwoSSRtZ2Msbi9lXElOJmcwL3JING8oVUpdOjFLNzk8MEZcWztnODxpRVQ3dUFAMD9bRiFqMF9LOixcanFlKTVQIT4jYjhkJHItISYxY2Q0cjteZDlrSkAjbWB1JGtNOVRZKmZqNGVzO0VURWhbcCo2YExZXWclM0xTOEUiVUJVTTFTRi1xW05eM3EnSGFkKmMsMFpoR1kiclEkUzNDY0U/WUwwJyI5S25TK0ZmaExYSjlTY0VgZ21TMF8kKmRkJmpuNCRRM2hfVU0sVGNoY01GYmQqcDo/OjdnJ1toWDJcKFNvUkZNYVYuQzVmNVotXSkxUj80U1lLXUkxUEZORkxJJEsraWkkTXNGNG1FTjZBJ0I+IzRvVXNoKEpebS1SMWM9bFBsKlwvIkZOSjNhY29WZGUlJmJbPyVnMFtuImcuK2VZNmlYUVxDWzs+XlhjU21eNElnWCE7UTEmY2cmXEp+PmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDE3CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDA2MSAwMDAwMCBuIAowMDAwMDAwMTEzIDAwMDAwIG4gCjAwMDAwMDAyMjAgMDAwMDAgbiAKMDAwMDAwMDMzMiAwMDAwMCBuIAowMDAwMDAwNTA3IDAwMDAwIG4gCjAwMDAwMDA2ODIgMDAwMDAgbiAKMDAwMDAwMDg3MyAwMDAwMCBuIAowMDAwMDAxMTA4IDAwMDAwIG4gCjAwMDAwMDEyODMgMDAwMDAgbiAKMDAwMDAwMTQ1OSAwMDAwMCBuIAowMDAwMDAxNTQzIDAwMDAwIG4gCjAwMDAwMDE3NzMgMDAwMDAgbiAKMDAwMDAwMTg0MyAwMDAwMCBuIAowMDAwMDAyMTI0IDAwMDAwIG4gCjAwMDAwMDIxOTEgMDAwMDAgbiAKMDAwMDAwNTU0MiAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzxiYzM0NjQ1NDU0OTE3MjYxZGY4ZWQzMmIyMzg3YjBjMz48YmMzNDY0NTQ1NDkxNzI2MWRmOGVkMzJiMjM4N2IwYzM+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDEzIDAgUgovUm9vdCAxMiAwIFIKL1NpemUgMTcKPj4Kc3RhcnR4cmVmCjg0MDYKJSVFT0YK";
-  function downloadCV() {
-    try {
-      const byteChars = atob(CV_B64);
-      const byteNums = new Array(byteChars.length);
-      for (let i = 0; i < byteChars.length; i++) byteNums[i] = byteChars.charCodeAt(i);
-      const byteArr = new Uint8Array(byteNums);
-      const blob = new Blob([byteArr], {type: 'application/octet-stream'});
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.style.display = 'none';
-      link.href = url;
-      link.setAttribute('download', 'Nosyba_Mudathir_CV.pdf');
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(url); }, 100);
-    } catch(e) { console.error(e); }
-  }
 </script>
 </body>
 </html>
